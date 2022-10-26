@@ -12,7 +12,7 @@ class LinkedList:
     # To allow for us to not have to say Node(ourdata) every time we want to edit a linked list 
     # we can make a function to create a node every time data is passed to this class
     
-    
+    '''
     def __init__(self, nodes=None): 
         self.head = None
         if nodes is not None: 
@@ -20,6 +20,16 @@ class LinkedList:
             self.head = node
             for elem in nodes: 
                 node.next = Node(data=elem)
+                node = node.next
+    '''
+
+    def __init__(self, nodes=None):
+        self.head = None
+        if nodes is not None:
+            node = Segment(data=nodes.pop(0))
+            self.head = node
+            for elem in nodes:
+                node.next = Segment(data=elem)
                 node = node.next
     
     def add_first(self, node): 
@@ -33,6 +43,18 @@ class LinkedList:
         for current_node in self: 
             pass
         current_node.next = node
+
+    def get(self, index):
+        current = self.head
+        count = 0
+
+        while current:
+            if count == index:
+                return current.get_data()
+            count += 1
+            current = current.next
+
+        return None
 
     # change function to use the index instead? would require modification of  __iter__ 
     # depends on usage which is currently unclear
@@ -54,7 +76,7 @@ class LinkedList:
         
         if self.head.data == target_node_data: 
             self.head = self.head.next
-            return 
+            return
 
         previous_node = self.head
         for node in self: 
@@ -73,14 +95,16 @@ class LinkedList:
             yield node
             node = node.next
 
+    
     def __repr__(self): 
         node = self.head
         nodes = []
         while node is not None: 
-            nodes.append(node.data)
+            nodes.append(node.name)
             node = node.next
         nodes.append("None")
         return " -> ".join(nodes)
+    
 
 
 class Node: 
@@ -91,7 +115,19 @@ class Node:
     def __repr__(self): 
         return self.data
 
+class Segment:
+    def __init__(self, key, name):
+        self.key = key
+        self.next = None
+        self.name = name
 
+    def get_key(self,) -> str:
+        return self.key
+
+    def get_data(self):
+        return self
+
+    
 
 
 
