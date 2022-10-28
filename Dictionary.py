@@ -54,6 +54,16 @@ class Dictionary:
 
         return None
 
+    def get_segment(self, name) -> Segment:
+        count = 0
+        for i in self.table:
+            if isinstance(i, LinkedList):
+                if i.get(count).name == name:
+                    return i.get(count)
+                count += 1
+        return None
+            
+
     def print_dict(self):
         print(self.table)
 
@@ -69,5 +79,9 @@ if __name__ == "__main__":
 
     test_dict.put(test_seg2)
     test_dict.put(test_seg3)
+
+    test_dict.get_segment("Split1").latest_time = 205
+
+    print(test_dict.get_segment("Split1").latest_time)
 
     test_dict.print_dict()
