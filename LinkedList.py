@@ -124,6 +124,9 @@ class Segment:
         create the segment or subsplit
         all the times are stored in seconds
         '''
+        
+        # Why not have the node just point to a segment?
+        
         self.key = key
         self.next = None
         self.name = name
