@@ -7,9 +7,6 @@
 # for example if a user wants to switch the order of two subplits it might be faster to do it with a hashmap
 
 
-from tokenize import Double
-
-
 class LinkedList: 
     
     # To allow for us to not have to say Node(ourdata) every time we want to edit a linked list 
@@ -77,13 +74,13 @@ class LinkedList:
         if self.head is None: 
             raise Exception("List is empty")
         
-        if self.head.data == target_node_data: 
+        if self.head.get_data() == target_node_data: 
             self.head = self.head.next
             return
 
         previous_node = self.head
         for node in self: 
-            if node.data == target_node_data: 
+            if node.get_data() == target_node_data: 
                 previous_node.next = node.next
                 return # leaves it up to the garbage collector to get rid of the value
             previous_node = node
@@ -107,49 +104,8 @@ class LinkedList:
             node = node.next
         nodes.append("None")
         return " -> ".join(nodes)
-    
 
-
-class Node: 
-    def __init__(self, data): 
-        self.data = data
-        self.next = None
-    
-    def __repr__(self): 
-        return self.data
-
-class Segment:
-    def __init__(self, key, name):
-        '''
-        create the segment or subsplit
-        all the times are stored in seconds
-        '''
-        
-        # Why not have the node just point to a segment?
-        
-        self.key = key
-        self.next = None
-        self.name = name
-        self.best_time = 0
-        self.worst_time = 0
-        self.average_time = 0
-        self.latest_time = 0
-
-    def get_key(self) -> str:
-        return self.key
-
-    def split(self):
-        return None
-
-    def skip_split(self):
-        return None
-
-    def undo_split(self):
-        return None
-
-    def get_data(self):
-        return self
-
+'''
 if __name__ == "__main__": 
     linked_list_tester = LinkedList(["a", "b", "c", "d", "e"])
     print(linked_list_tester)
@@ -159,3 +115,4 @@ if __name__ == "__main__":
     print(linked_list_tester.remove_node("a"))
     
     print(linked_list_tester)
+'''

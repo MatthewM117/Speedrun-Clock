@@ -1,8 +1,7 @@
 # dictionary using hashtable and linked lists
 
 from LinkedList import LinkedList
-from LinkedList import Node
-from LinkedList import Segment
+from Segment import Segment
 
 class Dictionary:
 
@@ -63,6 +62,16 @@ class Dictionary:
                 count += 1
         return None
             
+    def get_linked_list(self, name) -> LinkedList:
+        '''
+        gets the linked list based on the name of the first split
+        '''
+        count = 0
+        for i in self.table:
+            if isinstance(i, LinkedList):
+                if i.get(count).name == name:
+                    return i
+        return None
 
     def print_dict(self):
         print(self.table)
@@ -72,7 +81,7 @@ if __name__ == "__main__":
 
     test_seg = Segment("0011", "Split1")
 
-    test_seg2 = Segment("00221112", "Split1")
+    test_seg2 = Segment("00221112", "FirstSplit")
     test_seg3 = Segment("00221112", "Split2")
 
     test_dict.put(test_seg)
@@ -80,8 +89,13 @@ if __name__ == "__main__":
     test_dict.put(test_seg2)
     test_dict.put(test_seg3)
 
-    test_dict.get_segment("Split1").latest_time = 205
+    print(test_dict.get_linked_list("FirstSplit"))
 
-    print(test_dict.get_segment("Split1").latest_time)
+    '''
+    test_dict.get_segment("Split2").latest_time = 205
+
+    print(test_dict.get_segment("Split2").latest_time)
+    print(test_dict.get_segment("Split1").name)
 
     test_dict.print_dict()
+    '''
