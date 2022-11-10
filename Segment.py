@@ -1,24 +1,23 @@
-from MainSplit import MainSplit
-
-class Segment(MainSplit):
-    def __init__(self, key, name):
-        '''
-        create the segment or subsplit
-        all the times are stored in seconds
-        '''
-        super().__init__(name)
+class Segment():
+    def __init__(self, key, name, numb_of_children=0):
+        # Object Properties
+        self.split_name = name
         self.start_time = None
         self.end_time = None
+        self.child_splits = [Segment(111, 'split' + i, 0) for i in range(numb_of_children)] #change this to whatever datastruct later
         
+        # Node Info
         self.key = key
         self.next = None
         self.name = name
         
+        # Segment Stats
         self.best_time = 0
         self.worst_time = 0
         self.average_time = 0
         self.latest_time = 0
 
+    # Node Methods
     def get_key(self) -> str:
         return self.key
 
@@ -34,18 +33,17 @@ class Segment(MainSplit):
     def get_data(self):
         return self
     
-    # methods that override parent methods
-    def start_segment(self):
-        self.start_time = self.get_split_time()
+    # Object Methods
+    def set_start_segment(self, currentTime):
+        self.start_time = currentTime
     
-    def pause_segment(self): 
-        self.pause_split()
+    def set_end_segment(self, currentTime):
+        self.end_time = currentTime
     
-    def end_segment(self):
-        self.end_time = self.get_split_time()
-        
     def get_segment_start(self):
         return self.start_time
     
     def get_segment_end(self):
         return self.end_time
+    
+    

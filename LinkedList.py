@@ -1,5 +1,4 @@
 # A linked list implementation 
-from Segment import Segment
 
 class LinkedList: 
     
