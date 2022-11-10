@@ -1,11 +1,5 @@
 # A linked list implementation 
-# would be used for the array of subsplits? 
-# since initializing the linkedlist and adding an element to the end takes O(N)
-# it might be more effichent to use normal arrays, but would still need to consider
-# normal array's time complexity. Example if a user uses gui to add an extra subplit in the middle of their list of subsplits 
-# another idea is to just use a dictionary (hashmap) and call each subsplit by it's iterationName 
-# for example if a user wants to switch the order of two subplits it might be faster to do it with a hashmap
-
+from Segment import Segment
 
 class LinkedList: 
     

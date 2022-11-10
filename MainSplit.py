@@ -60,7 +60,7 @@ class MainSplit:
         # need to look at different options for stopping the thread
         
     def get_split_time(self):
-        print(self.timer_thread_object.get_current_time())
+        self.timer_thread_object.get_current_time()
             
 class TimerThread(): 
     def __init__(self, show_milliseconds):
@@ -127,6 +127,7 @@ class TimerThread():
 
 if __name__ == "__main__":
     test = MainSplit("Test")
+    
 
     test.add_split("0011", "Split1")
     test.add_split("0011", "Split2")
@@ -137,6 +138,15 @@ if __name__ == "__main__":
     test.get_split(FSN, "Split2").latest_time = 122
     test.get_split(FSN, "Split3").latest_time = 336
 
+    test.start_split()
+    test.get_split(FSN, "Split1").start_segment()
+    time.sleep(2)
+    test.get_split(FSN, "Split1").end_segment()
+    
+    test.get_split(FSN, "Split1").get_segment_start()
+    test.get_split(FSN, "Split1").get_segment_end()
+    
+    '''
     test.display_splits("Split1")
 
     segment_to_remove = test.get_split("Split1", "Split2")
@@ -145,7 +155,7 @@ if __name__ == "__main__":
     the_splits.remove_node(segment_to_remove)
     print("\n")
     test.display_splits("Split1")
-    '''
+    
     test.start_split()
 
     time.sleep(2)
