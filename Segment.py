@@ -1,13 +1,13 @@
 class Segment():
-    def __init__(self, key, name, numb_of_children=0):
+    def __init__(self, name):
         # Object Properties
         self.split_name = name
         self.start_time = None
         self.end_time = None
-        self.child_splits = [Segment(111, 'split' + i, 0) for i in range(numb_of_children)] #change this to whatever datastruct later
+        self.child_splits = [] 
         
         # Node Info
-        self.key = key
+        self.key = 111
         self.next = None
         self.name = name
         
@@ -45,5 +45,51 @@ class Segment():
     
     def get_segment_end(self):
         return self.end_time
+    
+    
+    # modifying subsplits
+    def add_child_split(self, name):
+        new_segment = Segment(name)
+        self.child_splits.append(new_segment)
+        #if isinstance(self.splits.get_segment(name), Segment): not sure what this was for
+        #    self.splits.get_segment(name).latest_time = 102
+
+    def display_child_splits(self):
+        for i in self.child_splits:
+            if isinstance(i, Segment):
+                print("{}: {}".format(i.name, i.latest_time))
+
+
+    def get_child_splits(self):
+        acc = None # accumilates all the split and child split names
+        if len(self.child_splits) == 0:
+            acc = self.split_name + " "
+            return acc
+        else:
+            acc = self.split_name + " ["
+            for i in self.child_splits:
+                print(i.split_name)
+                if isinstance(i, Segment):
+                    acc += i.get_child_splits()
+            acc += "] "
+        return acc
+                
+    
+    def get_child_split(self, target): # target is the split/segment you want to get
+        for i in self.child_splits:
+            if isinstance(i, Segment):
+                if i.name == target:
+                    return i
+    
+    def __add__(self, b): 
+        if isinstance(b, Segment):
+            return self.latest_time + b.latest_time
+        
+    def __radd__(self, b):
+        if isinstance(b, Segment):
+            return self.latest_time + b.latest_time
+    
+    def __str__(self):
+        return self.split_name
     
     

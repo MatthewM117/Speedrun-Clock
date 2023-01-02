@@ -8,7 +8,7 @@ class Run:
     def __init__(self, name): 
         self.timer_thread_object = None
         self.run_name = name
-        self.main_split = Segment(111, self.run_name + " Main Split")
+        self.main_split = Segment(self.run_name + "-Main-Split")
         # a run contains a main split. A main split contains all splits (and it's splits can have subsplits by having an array of the same Segment class)
         # do you agree with this design?
         
@@ -21,29 +21,19 @@ class Run:
         '''
     
     
-    # Reinplment in segment.py
-    """ 
-    def add_split(self, key, name):
-        new_segment = Segment(key, name)
-        self.splits.put(new_segment)
-        if isinstance(self.splits.get_segment(name), Segment):
-            self.splits.get_segment(name).latest_time = 102
+    # Reinplment in segment.py 
+    def add_split(self, name):
+        self.main_split.add_child_split(name)
 
-    def display_splits(self, first_split_name):
-        the_splits = self.splits.get_linked_list(first_split_name)
-        for i in the_splits:
-            if isinstance(i, Segment):
-                print("{}: {}".format(i.name, i.latest_time))
+    def display_splits(self):
+        output = self.main_split.get_child_splits()
+        print(output)
 
-    def get_split(self, first_split_name, target): # target is the split/segment you want to get
-        the_splits = self.splits.get_linked_list(first_split_name)
-        for i in the_splits:
-            if isinstance(i, Segment):
-                if i.name == target:
-                    return i
-    def get_splits_list(self, first_split_name):
-        return self.splits.get_linked_list(first_split_name)
-    """
+    def get_split(self, target_name): # target is the split/segment you want to get
+        self.main_split.get_child_split(target_name)
+
+    def get_splits_list(self):
+        self.main_split.display_child_splits()
     
     def start_run(self):
         self.timer_thread_object = TimerThread(True)
