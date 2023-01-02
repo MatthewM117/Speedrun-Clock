@@ -8,7 +8,7 @@ class Run:
     def __init__(self, name): 
         self.timer_thread_object = None
         self.run_name = name
-        self.main_split = Segment(self.run_name + "-Main-Split")
+        self.main_split = Segment(f'{name}-Main-Split')
         # a run contains a main split. A main split contains all splits (and it's splits can have subsplits by having an array of the same Segment class)
         # do you agree with this design?
         
@@ -22,6 +22,9 @@ class Run:
     
     
     # Reinplment in segment.py 
+    def get_main_split(self):
+        return self.main_split
+    
     def add_split(self, name):
         self.main_split.add_child_split(name)
 
@@ -33,7 +36,7 @@ class Run:
         self.main_split.get_child_split(target_name)
 
     def get_splits_list(self):
-        self.main_split.display_child_splits()
+        self.main_split.display_immediate_child_splits()
     
     def start_run(self):
         self.timer_thread_object = TimerThread(True)

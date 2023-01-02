@@ -54,11 +54,15 @@ class Segment():
         #if isinstance(self.splits.get_segment(name), Segment): not sure what this was for
         #    self.splits.get_segment(name).latest_time = 102
 
-    def display_child_splits(self):
+    def display_immediate_child_splits(self):
+        print(f'child-splits: ')
         for i in self.child_splits:
             if isinstance(i, Segment):
-                print("{}: {}".format(i.name, i.latest_time))
+                print(f' {i.name} ', end="")
+        print("\n")
 
+    def get_immediate_child_splits(self):
+        return self.child_splits
 
     def get_child_splits(self):
         acc = None # accumilates all the split and child split names
@@ -74,6 +78,8 @@ class Segment():
             acc += "] "
         return acc
                 
+    def get_child_splits_length(self):
+        return len(self.child_splits)
     
     def get_child_split(self, target): # target is the split/segment you want to get
         for i in self.child_splits:
@@ -89,7 +95,7 @@ class Segment():
         if isinstance(b, Segment):
             return self.latest_time + b.latest_time
     
-    def __str__(self):
-        return self.split_name
+    def __str__(self) -> str:
+        return (str) (self.split_name)
     
     
