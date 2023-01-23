@@ -15,6 +15,10 @@ def clear_terminal():
         _ = system('clear')
 
 
+
+'''
+A user input command based loop for using the program
+'''
 if __name__ == "__main__": 
     runs = {}
     user_command = None
@@ -29,6 +33,7 @@ if __name__ == "__main__":
         "exit": "exit the program"
     }
     
+    
     '''
     function for dispaying all the current runs the user has defined
     '''
@@ -42,11 +47,44 @@ if __name__ == "__main__":
     function for selecting a segment as deeply nested as required
     '''
     def select_segment():
-        print("testing")
-        # unable to access/modify current_selection from here
-        # the value is not changed when the function call goes back to the while loop
+        current_selection = Segment
+        current_selection_path = []
+        
+        print("---new segment selection---")    
+        display_runs()
+        run_name = input("run name: ")
+        selected_child_name = None
+        try:
+            current_selection = runs[run_name].get_main_split()
+            current_selection_path.append(current_selection)
+            print(current_selection)
+            print(current_selection_path)
+                
+            select_child = input("select a child? (y/n): ")
+            while select_child != "n":
+                if current_selection.get_child_splits_length() == 0:
+                    print(f'{current_selection} does not have any children')
+                    break
+                        
+                print_segment_list(current_selection.get_immediate_child_splits())
+                    
+                selected_child_name = input("child name: ")
+                current_selection = current_selection.get_child_split(selected_child_name)
+                    
+                current_selection_path.append(current_selection)
+                print(current_selection)
+                print(current_selection_path)
+                select_child = input("select a child? (y/n): ")
+
+        except KeyError:
+            print('Invalid Input: no run with that name exists')
+            
+        return (current_selection, current_selection_path)
     
     
+    '''
+    function for printing the path to the current selected split
+    '''
     def print_segment_list(segment_list):
         length = len(segment_list)
         if length > 0:
@@ -91,36 +129,8 @@ if __name__ == "__main__":
         elif user_command == "select":
             current_selection = Segment
             current_selection_path = []
-            print("---new segment selection---")
             
-            display_runs()
-            run_name = input("run name: ")
-            selected_child_name = None
-            try:
-                current_selection = runs[run_name].get_main_split()
-                current_selection_path.append(current_selection)
-                print(current_selection)
-                print(current_selection_path)
-                
-                select_child = input("select a child? (y/n): ")
-                while select_child != "n":
-                    if current_selection.get_child_splits_length() == 0:
-                        print(f'{current_selection} does not have any children')
-                        break
-                        
-                    print_segment_list(current_selection.get_immediate_child_splits())
-                    
-                    selected_child_name = input("child name: ")
-                    current_selection = current_selection.get_child_split(selected_child_name)
-                    
-                    current_selection_path.append(current_selection)
-                    print(current_selection)
-                    print(current_selection_path)
-                    select_child = input("select a child? (y/n): ")
-
-            except KeyError:
-                print('Invalid Input: no run with that name exists')
-            #current_selection, current_selection_path = select_segment()
+            current_selection, current_selection_path = select_segment()
                 
                 
         elif user_command == "add split":
