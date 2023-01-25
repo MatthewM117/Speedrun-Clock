@@ -1,6 +1,32 @@
 from Run import Run
 from Segment import Segment
 from os import system, name
+from pynput import keyboard
+import threading
+
+timer_active = False
+runs = {}
+current_run = None
+
+def on_press(key):
+    try:
+        #print('alphanumeric key {0} pressed'.format(
+            #key.char))
+        temp = key.char # need to put some line of code here that uses key.char to trigger the except
+    except AttributeError:
+        #print('special key {0} pressed'.format(
+            #key))
+        if timer_active and str(key) == "Key.space":
+            print("pausing timer")
+            pause_timer(current_run)
+
+def on_release(key):
+    #print('{0} released'.format(
+        #key))
+    if key == keyboard.Key.esc:
+        # Stop listener
+        return False
+
 
 '''
 function for clearning the terminal based on system
@@ -14,13 +40,15 @@ def clear_terminal():
     else:
         _ = system('clear')
 
-
+def pause_timer(current_run):
+    current_run.pause_run()
 
 '''
 A user input command based loop for using the program
 '''
-if __name__ == "__main__": 
-    runs = {}
+def main():
+
+    #runs = {}
     user_command = None
     current_selection = Segment # the current split selected
     current_selection_path = [] # path from top level the split selected
@@ -30,10 +58,10 @@ if __name__ == "__main__":
         "add split": "add a split to current selection or new selection",
         "runs": "display all the created runs",
         "splits": "display all the splits in a run",
+        "start timer": "starts the timer for your current selected splits",
         "exit": "exit the program"
     }
-    
-    
+
     '''
     function for dispaying all the current runs the user has defined
     '''
@@ -92,10 +120,8 @@ if __name__ == "__main__":
                 if (i == length-1):
                     print(f'{segment_list[i]}', end="\n")
                 else:
-                    print(f'{segment_list[i]} --> ', end="")    
-    
-    
-    clear_terminal()
+                    print(f'{segment_list[i]} --> ', end="")
+
     while (True):
         if len(current_selection_path) != 0:
             print(f'current selection:')
@@ -154,6 +180,14 @@ if __name__ == "__main__":
             except KeyError:
                 print('Invalid Input: no run with that name exists')
         
+        elif user_command == "start timer":
+            current_run_name = input("name of the run to start: ")
+            global current_run
+            current_run = runs[current_run_name]
+            current_run.start_run()
+            global timer_active
+            timer_active = True
+            print("\n")
         
         elif user_command == "current selection":
             print(str(current_selection), current_selection_path)
@@ -161,3 +195,22 @@ if __name__ == "__main__":
             
         else:
             print("invalid command")
+
+if __name__ == "__main__":     
+    
+    clear_terminal()
+
+    main_thread = threading.Thread(target=main, args=())
+    main_thread.start()
+    
+    # Collect events until released
+    with keyboard.Listener(
+            on_press=on_press,
+            on_release=on_release) as listener:
+        listener.join()
+
+    # ...or, in a non-blocking fashion:
+    listener = keyboard.Listener(
+        on_press=on_press,
+        on_release=on_release)
+    listener.start()
